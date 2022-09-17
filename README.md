@@ -1,5 +1,5 @@
 # anvil-instancing
-Dockerizing anvil to run on digital ocean, to act as a lightweight private chain.
+Dockerizing [anvil from foundry](https://book.getfoundry.sh/anvil/) to run on Digital Ocean Droplets, to act as a lightweight private chain
 
 ---
 
@@ -7,20 +7,57 @@ As builders look to enable chain-faciliated games, they arrive at a crossroad --
 
 This repo is meant for the hybrid games, where game logic is executed on the EVM through a private chain. This reduces the cost burden of operational systems and/or end-users.
 
+**End Result**
+
+Create a private, configurable, EVM environment that is accessible through typical JSON RPC clients (ethers.js, web3py).
+
+For example, web clients can submit transactions to the RPC to represent progression or outcomes of a game. Events can be parsed (via the RPC) and used for rendering the outcomes.
+
+**Trade Offs**
+
+* Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
+
+* To minimize disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
+
+---
+
+# Features
+
+* Simplified infrastructure deployment via Terraform. No need to click through web interfaces; minimal command-lines
+
+* Host a multitude of anvil instances for scaling
+
+* Automated state-instantiation. Define game logic as a contract, and automatically deploy it to the private chain when anvil instances are created
+
+* Anvil is fast -- it runs on affordable, lightweight machines (1 vCPU / 1GB RAM)
+
+* Flexible -- modify the Dockerfile to add additional parameters to the anvil instance (i.e. block times, gas limit, starting balances, etc)
+
+---
+
 
 # Setup
 
-1. Build Docker Image for Digital Ocean Droplets (take note of `--platform linux/amd64` flag, especially on Apple Silicon machines)
+Requirements & Dependencies:
+* Docker installed & configured with Docker Hub
+* Terraform installed
 
-    `docker build --platform linux/amd64 -t saucepoint/anvil-instancing . --no-cache`
+1. Build the Docker Image for Digital Ocean Droplets (take note of `--platform` flag, especially on Apple Silicon machines)
+
+    `docker build --platform linux/amd64 --tag saucepoint/anvil-instancing .`
 
 
 2. Push to Docker Hub
 
     `docker push saucepoint/anvil-instancing`
 
-3. Create Droplet
+3. Create Droplet with firewall rules, via Terraform
+    1. `cd terraform`
+    3. `terraform init`
+    4. `terraform apply`
 
-4. SSH into Droplet
+4. SSH into Droplet & Start the docker container
+    
+    `ssh root@<DROPLET IP> "docker pull docker.io/saucepoint/anvil-instancing && docker run -p 8545:8545 -d saucepoint/anvil-instancing`
 
-5. Start the anvil
+5. Verify that clients can connect. Run the `liveness.py` in `/python` direcotry
