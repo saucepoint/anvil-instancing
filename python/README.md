@@ -1,4 +1,6 @@
-Some simple scripts to verify RPC configuration and availability
+Some simple scripts to verify RPC configuration and availability.
+
+**Assumes that Droplet IP addresses can be read from terraform state file**
 
 # Recommended Setup
 
@@ -10,5 +12,4 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 python liveness.py
-
 ```
