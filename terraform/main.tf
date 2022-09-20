@@ -22,6 +22,10 @@ variable "num_instances" {
   type = number
 }
 
+variable "docker_respository" {
+  type = string
+}
+
 
 locals {
   dropletNames = {for i in range(var.num_instances): i => "anvil-${i}"}
@@ -62,8 +66,8 @@ resource "digitalocean_droplet" "anvil" {
   # pull the docker container and start it
   provisioner "remote-exec" {
     inline = [
-      "docker pull docker.io/saucepoint/anvil-instancing",
-      "docker run -p 8545:8545 -d saucepoint/anvil-instancing"
+      "docker pull docker.io/${var.docker_respository}",
+      "docker run -p 8545:8545 -d ${var.docker_respository}"
     ]
   }
 }

@@ -30,6 +30,7 @@ WORKDIR /root
 ENV INIT_SCRIPTS='/root/.foundry/bin/forge script /root/script/Counter.s.sol --chain-id 8118 --rpc-url http://0.0.0.0:8545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80  --silent --broadcast'
 
 # Command to start the anvil service
+# Add your flags commands here
 ENV ANVIL_START='/root/.foundry/bin/anvil --chain-id 8118 --host 0.0.0.0'
 
 # Execute the scripts after the anvil service is started

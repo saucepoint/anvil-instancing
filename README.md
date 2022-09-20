@@ -17,13 +17,13 @@ For example, web clients can submit transactions to the RPC to represent progres
 
 * Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
 
-* To minimize disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
+* To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
 
 ---
 
 # Features
 
-* Simplified infrastructure deployment via Terraform. No need to click through web interfaces; minimal command-lines
+* Simplified infrastructure deployment and container initialization via Terraform. No need to click through web interfaces; minimal command-lines
 
 * Host a multitude of anvil instances for scaling
 
@@ -35,29 +35,39 @@ For example, web clients can submit transactions to the RPC to represent progres
 
 ---
 
+# Configuration
+Below are some ready, off-the-shelf modifications you can make to tailor your private anvil node.
+
+1. Modify `src/Counter.sol` and `Counter.s.sol` with any contracts you want to deploy when starting the *private* anvil node
+    1. For example: deploy game logic, assets-as-NFTs, etc
+3. Find `ANVIL_START` in the `Dockerfile` and attach additional [anvil flags](https://book.getfoundry.sh/reference/anvil/)
 
 # Setup
 
 Requirements & Dependencies:
-* Docker installed & configured with Docker Hub
-* Terraform installed
+* Docker installed & configured with Docker Hub. You should be able to push your docket 
+* [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli#install-terraform) installed
+* Copy `.env.sample` to `.env`
+    1. See in-line comments on how to set the values
+    2. **Note**: it is recommended to create an SSH key separate from your default github SSH key. This separate SSH key will be used for SSH'ing into the droplets, and can be shared with teammates.
+    3. (Another option is uploading SSH files to DigitalOcean and attach them to the Droplets)
 
 1. Build the Docker Image for Digital Ocean Droplets (take note of `--platform` flag, especially on Apple Silicon machines)
 
     `docker build --platform linux/amd64 --tag saucepoint/anvil-instancing .`
 
+    (replace the docker repository with your own)
 
 2. Push to Docker Hub
 
     `docker push saucepoint/anvil-instancing`
 
-3. Create Droplet with firewall rules, via Terraform
+    (replace the docker repository with your own)
+
+3. Create & start the Anvil instances (Droplets), via Terraform
     1. `cd terraform`
-    3. `terraform init`
-    4. `terraform apply`
+    2. `source ../.env` -- set variables for Terraform
+    3. `terraform init` -- installs the DigitalOcean provider
+    4. `terraform apply` -- creates required infrastructure; starts the containers on the newly created droplets
 
-4. SSH into Droplet & Start the docker container
-    
-    `ssh root@<DROPLET IP> "docker pull docker.io/saucepoint/anvil-instancing && docker run -p 8545:8545 -d saucepoint/anvil-instancing`
-
-5. Verify that clients can connect. Run the `liveness.py` in `/python` direcotry
+5. Verify that clients can connect. Run the `liveness.py` in `/python` directory
