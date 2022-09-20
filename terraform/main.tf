@@ -22,7 +22,7 @@ variable "num_instances" {
   type = number
 }
 
-variable "docker_respository" {
+variable "docker_repository" {
   type = string
 }
 
@@ -66,8 +66,8 @@ resource "digitalocean_droplet" "anvil" {
   # pull the docker container and start it
   provisioner "remote-exec" {
     inline = [
-      "docker pull docker.io/${var.docker_respository}",
-      "docker run -p 8545:8545 -d ${var.docker_respository}"
+      "docker pull docker.io/${var.docker_repository}",
+      "docker run -p 8545:8545 -d ${var.docker_repository}"
     ]
   }
 }

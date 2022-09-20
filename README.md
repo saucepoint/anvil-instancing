@@ -62,3 +62,12 @@ Requirements & Dependencies:
     4. `terraform apply` -- creates required infrastructure; starts the containers on the newly created droplets
 
 5. Verify that clients can connect to the RPCs. Run the `liveness.py` in `/python` directory
+
+## Destroying
+Great for starting over or shutting down your prototype
+
+To destroy the instances, firewall, and SSH key:
+```
+cd terraform
+terraform destroy
+```
