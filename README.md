@@ -1,23 +1,9 @@
 # anvil-instancing
-Dockerizing [anvil from foundry](https://book.getfoundry.sh/anvil/) to run on Digital Ocean Droplets, to act as a lightweight private chain
+Dockerizing [anvil from foundry](https://book.getfoundry.sh/anvil/) to run on Digital Ocean Droplets, to act as lightweight private chains
 
----
+The instance(s) are accessible through typical JSON RPC clients (ethers.js, web3py).
 
-As builders look to enable chain-faciliated games, they arrive at a crossroad -- *what portions of the system should be onchain?.* Some will choose only to have game assets/components represented as NFTs, while game logic resides on traditional web2 backends. Others will go all out with a fully on-chain experience. In the middle, some will a adopt a hybrid approach.
-
-This repo is meant for the hybrid games, where game logic is executed on the EVM through a private chain. This reduces the cost burden of operational systems and/or end-users.
-
-**End Result**
-
-Create a private, configurable, EVM environment that is accessible through typical JSON RPC clients (ethers.js, web3py).
-
-For example, web clients can submit transactions to the RPC to represent progression or outcomes of a game. Events can be parsed (via the RPC) and used for rendering the outcomes.
-
-**Trade Offs**
-
-* Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
-
-* To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
+I.e. web clients can submit transactions (free) to the RPC to represent progression or outcomes of a game. Events can be parsed (via the RPC) and used for rendering the outcomes.
 
 ---
 
@@ -33,10 +19,16 @@ For example, web clients can submit transactions to the RPC to represent progres
 
 * Flexible -- modify the Dockerfile to add additional parameters to the anvil instance (i.e. block times, gas limit, starting balances, etc)
 
+**Trade Offs**
+
+* Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
+
+* To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
+
 ---
 
 # Configuration
-Below are some ready, off-the-shelf modifications you can make to tailor your private anvil node.
+Off-the-shelf modifications to tailor your private anvil node:
 
 1. Modify `src/Counter.sol` and `Counter.s.sol` with any contracts you want to deploy when starting the *private* anvil node
     1. For example: deploy game logic, assets-as-NFTs, etc
@@ -50,7 +42,6 @@ Requirements & Dependencies:
 * Copy `.env.sample` to `.env`
     1. See in-line comments on how to set the values
     2. **Note**: it is recommended to create an SSH key separate from your default github SSH key. This separate SSH key will be used for SSH'ing into the droplets, and can be shared with teammates.
-    3. (Another option is uploading SSH files to DigitalOcean and attach them to the Droplets)
 
 1. Build the Docker Image for Digital Ocean Droplets (take note of `--platform` flag, especially on Apple Silicon machines)
 
@@ -70,4 +61,4 @@ Requirements & Dependencies:
     3. `terraform init` -- installs the DigitalOcean provider
     4. `terraform apply` -- creates required infrastructure; starts the containers on the newly created droplets
 
-5. Verify that clients can connect. Run the `liveness.py` in `/python` directory
+5. Verify that clients can connect to the RPCs. Run the `liveness.py` in `/python` directory
