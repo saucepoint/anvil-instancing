@@ -30,9 +30,9 @@ I.e. web clients can submit transactions (free) to the RPC to represent progress
 # Configuration
 Off-the-shelf modifications to tailor your private anvil node:
 
-1. Modify `src/Counter.sol` and `Counter.s.sol` with any contracts you want to deploy when starting the *private* anvil node
+1. Modify [src/Counter.sol](src/Counter.sol) and [script/Counter.s.sol](script/Counter.s.sol) with any contracts you want to deploy when starting the *private* anvil node
     1. For example: deploy game logic, assets-as-NFTs, etc
-3. Find `ANVIL_START` in the `Dockerfile` and attach additional [anvil flags](https://book.getfoundry.sh/reference/anvil/)
+3. Find `ANVIL_START` in the [Dockerfile](Dockerfile) and attach additional [anvil flags](https://book.getfoundry.sh/reference/anvil/)
 
 # Setup
 
