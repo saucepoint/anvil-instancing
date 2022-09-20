@@ -37,7 +37,7 @@ Off-the-shelf modifications to tailor your private anvil node:
 # Setup
 
 Requirements & Dependencies:
-* Docker installed & configured with Docker Hub. You should be able to push your docket 
+* Docker installed & [configured with Docker Hub](https://docs.docker.com/docker-hub/#step-3-download-and-install-docker-desktop). You should be able to push your docker container to the Hub
 * [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli#install-terraform) installed
 * Copy `.env.sample` to `.env`
     1. See in-line comments on how to set the values
