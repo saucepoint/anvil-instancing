@@ -18,7 +18,7 @@ python liveness.py
 
 Executed with `multitime -n 50` (50 runs). Results measured in seconds
 
-Macbook Pro 16inch - M1 Pro / 16 GB RAM
+### M1 Pro / 16 GB RAM - Macbook Pro 16inch
 ```
     1: python benchmark.py http://127.0.0.1:8545
                 Mean        Std.Dev.    Min         Median      Max
@@ -27,12 +27,12 @@ Macbook Pro 16inch - M1 Pro / 16 GB RAM
     sys         0.041       0.006       0.031       0.042       0.052
 ```
 
-Desktop PC - i7 8700k / 16 GB RAM
+### i7 8700k / 16 GB RAM - Desktop PC
 ```
 TBD
 ```
 
-Digital Ocean Droplet (Native) - 1 vCPU / 512 MB RAM
+### 1 vCPU / 512 MB RAM - Digital Ocean Droplet (Native)
 
 (Runs anvil directly, without Docker)
 ```
@@ -43,9 +43,8 @@ Digital Ocean Droplet (Native) - 1 vCPU / 512 MB RAM
     sys         0.049       0.007       0.036       0.049       0.066
 ```
 
-Digital Ocean Droplet (Docker) - 1 vCPU / 1GB RAM
+### 1 vCPU / 1GB RAM - Digital Ocean Droplet (Docker)
 
-(Uses the legacy implementation, where anvil & forge scripts were faciliated via a Docker container)
 ```
     1: python benchmark.py http://159.203.105.5:8545
                 Mean        Std.Dev.    Min         Median      Max
@@ -54,7 +53,7 @@ Digital Ocean Droplet (Docker) - 1 vCPU / 1GB RAM
     sys         0.044       0.005       0.036       0.044       0.067
 ```
 
-Digital Ocean Droplet (Native) - 1 vCPU / 1GB RAM
+### 1 vCPU / 1GB RAM - Digital Ocean Droplet (Native) 
 
 (Runs anvil directly, without Docker)
 ```
@@ -66,7 +65,7 @@ Digital Ocean Droplet (Native) - 1 vCPU / 1GB RAM
 ```
 
 
-Digital Ocean Droplet (Native) - AMD 1 vCPU / 1GB RAM
+### AMD 1 vCPU / 1GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.62.76:8545
@@ -76,7 +75,7 @@ Digital Ocean Droplet (Native) - AMD 1 vCPU / 1GB RAM
     sys         0.044       0.007       0.034       0.043       0.069
 ```
 
-Digital Ocean Droplet (Native) - Intel 1 vCPU / 1GB RAM
+### Intel 1 vCPU / 1GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.49.29:8545
@@ -86,7 +85,7 @@ Digital Ocean Droplet (Native) - Intel 1 vCPU / 1GB RAM
     sys         0.041       0.005       0.034       0.041       0.067
 ```
 
-Digital Ocean Droplet (Native) - 1 vCPU / 2GB RAM
+### 1 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
                 Mean        Std.Dev.    Min         Median      Max
@@ -95,7 +94,7 @@ Digital Ocean Droplet (Native) - 1 vCPU / 2GB RAM
     sys         0.048       0.007       0.036       0.046       0.062
 ```
 
-Digital Ocean Droplet (Native) - AMD 1 vCPU / 2GB RAM
+### AMD 1 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.0.65:8545
@@ -105,7 +104,7 @@ Digital Ocean Droplet (Native) - AMD 1 vCPU / 2GB RAM
     sys         0.042       0.006       0.034       0.040       0.066 
 ```
 
-Digital Ocean Droplet (Native) - Intel 1 vCPU / 2GB RAM
+### Intel 1 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.49.254:8545
@@ -115,7 +114,7 @@ Digital Ocean Droplet (Native) - Intel 1 vCPU / 2GB RAM
     sys         0.048       0.007       0.035       0.049       0.064
 ```
 
-Digital Ocean Droplet (Native) - 2 vCPU / 2GB RAM
+### 2 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.62.10:8545
@@ -125,7 +124,7 @@ Digital Ocean Droplet (Native) - 2 vCPU / 2GB RAM
     sys         0.048       0.008       0.035       0.048       0.067       
 ```
 
-Digital Ocean Droplet (Native) - AMD 2 vCPU / 2GB RAM
+### AMD 2 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.62.202:8545
@@ -135,7 +134,7 @@ Digital Ocean Droplet (Native) - AMD 2 vCPU / 2GB RAM
     sys         0.041       0.005       0.034       0.041       0.065 
 ```
 
-Digital Ocean Droplet (Native) - Intel 2 vCPU / 2GB RAM
+### Intel 2 vCPU / 2GB RAM - Digital Ocean Droplet (Native)
 
 ```
     1: python benchmark.py http://157.230.53.229:8545
