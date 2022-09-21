@@ -21,8 +21,6 @@ I.e. web clients can submit transactions (free) to the RPC to represent progress
 
 **Trade Offs**
 
-* Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
-
 * To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
 
 ---
