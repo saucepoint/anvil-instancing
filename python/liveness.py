@@ -12,4 +12,4 @@ for droplet in droplets:
     ip = droplet['attributes']['ipv4_address']
     rpc_url = f'http://{ip}:8545'
     w3 = Web3(Web3.HTTPProvider(rpc_url))
-    print(ip, w3.isConnected())
+    print(ip, f'Successful Connection: {w3.isConnected()}')
