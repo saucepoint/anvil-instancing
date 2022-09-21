@@ -26,6 +26,8 @@ If you want to circumvent Docker and run anvil *directly* on a 1 vCPU / 512 MB, 
 
 > The latency compared to a local anvil instance is most likely due to accessing the RPC over a network
 
+![Benchmark Chart](https://pbs.twimg.com/media/FdNkL-2XEAAI9Vf?format=png&name=900x900)
+
 Results measured in seconds:
 
 ### M1 Pro / 16 GB RAM - Macbook Pro 16inch
