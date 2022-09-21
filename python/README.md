@@ -1,4 +1,4 @@
-Some simple scripts to verify RPC configuration and availability.
+Some simple scripts to verify RPC configuration, availability, and speed.
 
 **Assumes that Droplet IP addresses can be read from terraform state file**
 
@@ -16,7 +16,17 @@ python liveness.py
 
 # Benchmark Results
 
-Executed with `multitime -n 50` (50 runs). Results measured in seconds
+Executed `benchmark.py`, which simulates a few contract calls, with `multitime -n 50` (50 runs).
+
+### TLDR: Anvil performs equally across different Droplet sizes
+Therefore, the 1 vCPU / 1GB RAM is the recommended instance. (1 vCPU / 512 MB is unavailable for Docker-included Droplets).
+
+
+If you want to circumvent Docker and run anvil *directly* on a 1 vCPU / 512 MB, checkout [example terraform](../terraform/1vcpu-512mb.example)
+
+> The latency compared to a local anvil instance is most likely due to accessing the RPC over a network
+
+Results measured in seconds:
 
 ### M1 Pro / 16 GB RAM - Macbook Pro 16inch
 ```
@@ -25,11 +35,6 @@ Executed with `multitime -n 50` (50 runs). Results measured in seconds
     real        0.335       0.030       0.286       0.340       0.398       
     user        0.279       0.018       0.247       0.282       0.318       
     sys         0.041       0.006       0.031       0.042       0.052
-```
-
-### i7 8700k / 16 GB RAM - Desktop PC
-```
-TBD
 ```
 
 ### 1 vCPU / 512 MB RAM - Digital Ocean Droplet (Native)

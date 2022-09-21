@@ -1,0 +1,101 @@
+# -------------------------------------------------------
+# An example Terraform resource definition
+#
+# This is not used canonically, but is included for anyone
+# that forks the code and wants to circumvent any Docker
+# overhead.
+#
+# As a consequence of using Terraform Provisioners to directly
+# setup the droplets, you can get away with a
+# 1vcpu-512mb droplet. Using docker on a droplet requires
+# a minimum of 1vcpu-1gb. If you want to save $2/mo and
+# can leverage Terraform Provisioners for customization,
+# here's what you'll need:
+#
+# (replace `resource "digitalocean_droplet" "anvil"` in main.tf
+#  with the following block:)
+# -------------------------------------------------------
+
+# Create a new Anvil Droplet in the nyc1 region (has access to 1vcpu-512mb instances)
+# feel free to copy & paste this to create additional instances
+resource "digitalocean_droplet" "anvil" {
+  for_each = local.dropletNames
+  image  = "ubuntu-22-04-x64"  # Ubuntu 22.04
+  name   = each.value
+  region = "nyc1"
+  size   = "s-1vcpu-1gb"  # 1 CPU, 1 GB RAM, 25 GB SSD is the minimum spec for the docker image
+  ssh_keys = [digitalocean_ssh_key.default.fingerprint]
+  depends_on = [
+    digitalocean_ssh_key.default
+  ]
+}
+
+# sets up foundry on the droplets by sending SSH commands
+resource "null_resource" "initAnvil" {
+  for_each = digitalocean_droplet.anvil
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = each.value.ipv4_address
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "apt install -y curl git",
+      "curl -L https://foundry.paradigm.xyz | bash",
+      "/root/.foundry/bin/foundryup",
+      "mkdir /root/contracts"
+    ]
+  }
+
+  # copies local contract files to the droplets
+  provisioner "file" {
+    source = "../lib"
+    destination = "/root/contracts"
+  }
+  provisioner "file" {
+    source = "../script"
+    destination = "/root/contracts"
+  }
+  provisioner "file" {
+    source = "../src"
+    destination = "/root/contracts"
+  }
+  provisioner "file" {
+    source = "../.gitmodules"
+    destination = "/root/contracts/.gitmodules"
+  }
+  provisioner "file" {
+    source = "../foundry.toml"
+    destination = "/root/contracts/foundry.toml"
+  }
+
+
+  depends_on = [
+    digitalocean_droplet.anvil,
+    digitalocean_firewall.anvil8545
+  ]
+}
+
+resource "null_resource" "startAnvil" {
+  for_each = digitalocean_droplet.anvil
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = each.value.ipv4_address
+  }
+
+  # starts anvil and runs a forge script to init the state
+  provisioner "remote-exec" {
+    inline = [
+      "nohup /root/.foundry/bin/anvil --chain-id 8118 --host 0.0.0.0 >/dev/null 2>&1 &",
+      "sleep 5 && cd /root/contracts && /root/.foundry/bin/forge script /root/contracts/script/Counter.s.sol --chain-id 8118 --rpc-url http://0.0.0.0:8545 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80  --silent --broadcast"
+    ]
+  }
+
+  depends_on = [
+    digitalocean_droplet.anvil,
+    digitalocean_firewall.anvil8545,
+    null_resource.initAnvil
+  ]
+}

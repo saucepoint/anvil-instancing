@@ -15,13 +15,11 @@ I.e. web clients can submit transactions (free) to the RPC to represent progress
 
 * Automated state-instantiation. Define game logic as a contract, and automatically deploy it to the private chain when anvil instances are created
 
-* Anvil is fast -- it runs on affordable, lightweight machines (1 vCPU / 1GB RAM)
+* Anvil is fast -- it runs on affordable, lightweight instances (1 vCPU / 1GB RAM) - [Benchmarks](python/README.md#benchmark-results)
 
 * Flexible -- modify the Dockerfile to add additional parameters to the anvil instance (i.e. block times, gas limit, starting balances, etc)
 
 **Trade Offs**
-
-* Anvil does not support subscriptions [docs](https://book.getfoundry.sh/reference/anvil/)
 
 * To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
 
@@ -60,6 +58,10 @@ Requirements & Dependencies:
     2. `source ../.env` -- set variables for Terraform
     3. `terraform init` -- installs the DigitalOcean provider
     4. `terraform apply` -- creates required infrastructure; starts the containers on the newly created droplets
+
+    > If you are using a new SSH key, you may need to add it to your agent:
+    >
+    > eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_NEW_SSH_KEY_NON_PUB
 
 5. Verify that clients can connect to the RPCs. Run the `liveness.py` in `/python` directory
 
