@@ -7,8 +7,11 @@ terraform {
   }
 }
 
+
+# ----------------------------------------
 # Variables will be read in from the environment
 # i.e. TF_VAR_do_token (from running `source ../.env`)
+# ----------------------------------------
 variable "do_token" {
   type = string
 }
@@ -26,16 +29,23 @@ variable "docker_repository" {
   type = string
 }
 
-
 locals {
   dropletNames = {for i in range(var.num_instances): i => "anvil-${i}"}
 }
 
-# Configure the DigitalOcean Provider
+
+# -------------------------------------------------
+# Provider:
+# Configure Terraform to interact with DigitalOcean
+# -------------------------------------------------
 provider "digitalocean" {
   token = var.do_token
 }
 
+
+# ----------------------------------------
+# Resources
+# ----------------------------------------
 # SSH key for accessing droplets
 resource "digitalocean_ssh_key" "default" {
   name       = "Terraform"
@@ -43,7 +53,6 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 # Create a new Anvil Droplet in the nyc3 region
-# feel free to copy & paste this to create additional instances
 resource "digitalocean_droplet" "anvil" {
   for_each = local.dropletNames
 
@@ -78,6 +87,8 @@ resource "digitalocean_firewall" "anvil8545" {
 
   droplet_ids = [for d in digitalocean_droplet.anvil : d.id]
 
+  # Optionally limit SSH access to a specific IP address
+  # by replacing `source_addresses` with your own IP addresses
   inbound_rule {
     protocol         = "tcp"
     port_range       = "22"
@@ -112,6 +123,10 @@ resource "digitalocean_firewall" "anvil8545" {
   ]
 }
 
+
+# ----------------------------------------
+# Outputs / Logging
+# ----------------------------------------
 # prints out the IP addresses of the droplets
 output "anvil_ipv4" {
   value = [for d in digitalocean_droplet.anvil : d.ipv4_address]
