@@ -3,7 +3,7 @@ Dockerizing [anvil from foundry](https://book.getfoundry.sh/anvil/) to run on Di
 
 The instance(s) are accessible through typical JSON RPC clients (ethers.js, web3py).
 
-I.e. web clients can submit transactions (free) to the RPC to represent progression or outcomes of a game. Events can be parsed (via the RPC) and used for rendering the outcomes.
+i.e. web clients can submit free transactions to the RPC to represent progression or outcomes of a game. Events can be parsed (via the RPC) and used for rendering the outcomes.
 
 ---
 
@@ -28,7 +28,7 @@ I.e. web clients can submit transactions (free) to the RPC to represent progress
 # Configuration
 Off-the-shelf modifications to tailor your private anvil node:
 
-1. Modify [src/Counter.sol](src/Counter.sol) and [script/Counter.s.sol](script/Counter.s.sol) with any contracts you want to deploy when starting the *private* anvil node
+1. Modify/Replace [src/Counter.sol](src/Counter.sol) and [script/Counter.s.sol](script/Counter.s.sol) with any contracts you want to deploy when starting the *private* anvil node
     1. For example: deploy game logic, assets-as-NFTs, etc
 3. Find `ANVIL_START` in the [Dockerfile](Dockerfile) and attach additional [anvil flags](https://book.getfoundry.sh/reference/anvil/)
 
