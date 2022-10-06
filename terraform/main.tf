@@ -123,6 +123,22 @@ resource "digitalocean_firewall" "anvil8545" {
   ]
 }
 
+# Spaces (S3) for backing up the anvil state
+resource "digitalocean_spaces_bucket" "anvil_state" {
+  name = "anvil_state"
+  region = "nyc3"
+  acl = "private"
+  
+  lifecycle_rule {
+    id = "anvil_state_expiration"
+    prefix = "backups"
+    enabled = true
+    expiration {
+      days = 5
+    }
+  }
+}
+
 
 # ----------------------------------------
 # Outputs / Logging
