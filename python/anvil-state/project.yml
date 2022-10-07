@@ -1,0 +1,30 @@
+environment: {}
+parameters: {}
+packages:
+  - name: anvil
+    environment:
+      SPACES_ACCESS_KEY_ID: "${SPACES_ACCESS_KEY_ID}"
+      SPACES_SECRET_ACCESS_KEY: "${SPACES_SECRET_ACCESS_KEY}"
+      SPACES_BUCKET_NAME: "${SPACES_BUCKET_NAME}"
+      RPCS: "${RPCS}"
+    parameters: {}
+    annotations: {}
+    functions:
+      - name: dump
+        binary: false
+        main: ''
+        runtime: 'python:default'
+        web: true
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
+      - name: load
+        binary: false
+        main: ''
+        runtime: 'python:default'
+        web: true
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
