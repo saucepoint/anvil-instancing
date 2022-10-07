@@ -35,6 +35,8 @@ Off-the-shelf modifications to tailor your private anvil node:
 # Setup
 
 Requirements & Dependencies:
+* [foundry](https://book.getfoundry.sh) installed
+    1. Install `forge-std` dependency with `forge install`
 * Docker installed & [configured with Docker Hub](https://docs.docker.com/docker-hub/#step-3-download-and-install-docker-desktop). You should be able to push your docker container to the Hub
 * [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli#install-terraform) installed
 * Copy `.env.sample` to `.env`
@@ -61,7 +63,7 @@ Requirements & Dependencies:
 
     > If you are using a new SSH key, you may need to add it to your agent:
     >
-    > eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_NEW_SSH_KEY_NON_PUB
+    > > eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_NEW_SSH_KEY_NON_PUB
 
 5. Verify that clients can connect to the RPCs. Run the `liveness.py` in `/python` directory
 
@@ -73,3 +75,5 @@ To destroy the instances, firewall, and SSH key:
 cd terraform
 terraform destroy
 ```
+
+**Note**: Spaces (object storage for anvil state) will not be destroyed unless the space is empty
