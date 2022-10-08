@@ -123,9 +123,16 @@ resource "digitalocean_firewall" "anvil8545" {
   ]
 }
 
+# unique suffix for the Spaces bucket
+resource "random_id" "spaces_suffix" {
+  byte_length = 4
+}
+
 # Spaces (S3) for backing up the anvil state
 resource "digitalocean_spaces_bucket" "anvil_state" {
-  name = "anvil_state"
+  // must be a globally unique name
+  // feel free to modify to avoid collisions:
+  name = "anvil-state-${random_id.spaces_suffix.hex}"
   region = "nyc3"
   acl = "private"
   
