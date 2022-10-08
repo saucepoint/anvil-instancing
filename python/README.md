@@ -1,4 +1,43 @@
-Some simple scripts to verify RPC configuration, availability, and speed.
+# Persistence
+
+Anvil state is *emphemeral*, and is deleted when the process is killed. However, state can be saved and restored via [anvil_dumpState and anvil_loadState](https://book.getfoundry.sh/reference/anvil/)
+
+These RPC calls are scheduled and invoked via the implemntation in `anvil-state/`. These dirt-cheap serverless functions are powered by [DigitalOcean's Functions](https://www.digitalocean.com/products/functions).
+
+## Object Storage
+
+Anvil-state (hex string) is saved to DigitalOcean Spaces (S3-clone). Assuming the base Terraform was applied, the buckets and expiration policy should be already configured.
+
+* The state is saved to 2 locations:
+    * `anvil-state-XXXXXXXX/backups/anvil{i}/state-{timestamp}.txt` - everytime a backup is called, a new file is created here. However Terraform has configured the `backups/` directory to only hold the state for **5 days**
+    * `anvil-state-XXXXXXXX/latest/anvil{i}.txt` - the most recently backed-up state. Does not expire, but is overwritten on each backup
+
+## Get Started:
+
+Unfortunately DigitalOcean Functions are not deployable with Terraform *yet*. We'll need to run some commands to get setup:
+
+[Additional DigitalOcean Documentation](https://docs.digitalocean.com/products/functions/quickstart/)
+
+1. Have [`doctl` CLI](https://docs.digitalocean.com/reference/doctl/how-to/install/) installed and configured
+
+2. `doctl serverless install` - installs the `doctl serverless` sub-CLI commands
+
+3. `doctl serverless connect` - connect to the DigitalOcean Functions service
+
+3. `doctl serverless namespaces create --label anvil-state --region nyc1` - creates a Namespace, which organizes a collection of functions
+
+3. `doctl serverless deploy anvil-state` - deploy our serverless functions!
+
+## Dumping State
+    * `anvil/dump` is scheduled to run every 5 minutes, defined [here]
+
+## Restoring State
+
+
+
+---
+
+The directory includes simple scripts to verify RPC configuration, availability, and speed.
 
 **Assumes that Droplet IP addresses can be read from terraform state file**
 

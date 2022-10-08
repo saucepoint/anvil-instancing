@@ -23,6 +23,8 @@ i.e. web clients can submit free transactions to the RPC to represent progressio
 
 * To minimize memory and disk consumption, anvil instances should be restarted or reset occasionally. This means the chain's state should be considered *emphemeral*
 
+    * **State persistence is available**, however performance degradation and trade offs have not been fully measured yet. Please see [Persistence](python/README.md#persistence) for information, configuration, and setup
+
 ---
 
 # Configuration
