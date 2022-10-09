@@ -1,16 +1,16 @@
+# Contents:
+
+* [Persistence](#persistence) - back up & restore anvil state
+
+* [Liveness](#liveness) - verify connectivity of the RPC
+
+* [Benchmarks](#benchmark-results) - Performance benchmarks across different DigitalOcean Droplets. (TLDR: equal performance even on the smallest instance)
+
 # Persistence
 
-Anvil state is *emphemeral*, and is deleted when the process is killed. However, state can be saved and restored via [anvil_dumpState and anvil_loadState](https://book.getfoundry.sh/reference/anvil/)
+Anvil state is *emphemeral* and is deleted when the process is killed. However, state can be saved and restored via [anvil_dumpState and anvil_loadState](https://book.getfoundry.sh/reference/anvil/)
 
 These RPC calls are scheduled and invoked via the implemntation in `anvil-state/`. These dirt-cheap serverless functions are powered by [DigitalOcean's Functions](https://www.digitalocean.com/products/functions).
-
-## Object Storage
-
-Anvil-state (hex string) is saved to DigitalOcean Spaces (S3-clone). Assuming the base Terraform was applied, the buckets and expiration policy should be already configured.
-
-* The state is saved to 2 locations:
-    * `anvil-state-XXXXXXXX/backups/anvil{i}/state-{timestamp}.txt` - everytime a backup is called, a new file is created here. However Terraform has configured the `backups/` directory to only hold the state for **5 days**
-    * `anvil-state-XXXXXXXX/latest/anvil{i}.txt` - the most recently backed-up state. Does not expire, but is overwritten on each backup
 
 ## Get Started:
 
@@ -29,11 +29,29 @@ Unfortunately DigitalOcean Functions are not deployable with Terraform *yet*. We
 3. `doctl serverless deploy anvil-state` - deploy our serverless functions!
 
 ## Dumping State
-    * `anvil/dump` is scheduled to run every 5 minutes, defined [here]
+* `anvil/dump` is scheduled to run every 5 minutes, defined [here](anvil-state/packages/project.yml)
+
+* files are saved based to [object storage](#object-storage)
 
 ## Restoring State
+* `anvil/load` will allow you to restore state from one of your backups
+* Arguments:
+    * `id` - the index/number associated with the RPC defined in [.env](anvil-state/.env.sample)
+    * `backup_path` - an optional path to specify which backup file to use. Formatted as `backups/anvil{i}/state-{timestamp}.txt`
+        * Omitting `backup_path` will restore the state from the default `latest/anvil{i}.txt`
+* via API:
+    * `curl -H "Content-Type: application/json" -X POST --data '{"id":0}' <function-url>`
+* via CLI:
+    * `doctl serverless functions invoke anvil/load -p id:0`
 
 
+## Object Storage
+
+Anvil-state (hex string) is saved to DigitalOcean Spaces (S3-clone). Assuming the base Terraform was applied, the buckets and expiration policy should be already configured.
+
+* The state is saved to 2 locations:
+    * `anvil-state-XXXXXXXX/backups/anvil{i}/state-{timestamp}.txt` - everytime a backup is called, a new file is created here. However Terraform has configured the `backups/` directory to only hold the state for **5 days**
+    * `anvil-state-XXXXXXXX/latest/anvil{i}.txt` - the most recently backed-up state. Does not expire, but is overwritten on each backup
 
 ---
 
@@ -41,7 +59,9 @@ The directory includes simple scripts to verify RPC configuration, availability,
 
 **Assumes that Droplet IP addresses can be read from terraform state file**
 
-# Recommended Setup
+# Liveness
+
+Verify the availability of the RPC
 
 ```bash
 python3 -m venv .venv
