@@ -21,6 +21,11 @@ packages:
         environment: {}
         annotations: {}
         limits: {}
+        triggers:
+          - name: auto-dump
+            sourceType: scheduler
+            sourceDetails:
+              cron: "*/10 * * * *"
       - name: load
         binary: false
         main: ''
