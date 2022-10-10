@@ -10,7 +10,7 @@
 
 Anvil state is *emphemeral* and is deleted when the process is killed. However, state can be saved and restored via [anvil_dumpState and anvil_loadState](https://book.getfoundry.sh/reference/anvil/)
 
-These RPC calls are scheduled and invoked via the implemntation in `anvil-state/`. These dirt-cheap serverless functions are powered by [DigitalOcean's Functions](https://www.digitalocean.com/products/functions).
+These RPC calls are scheduled and invoked via serverless functions in `anvil-state/`. These dirt-cheap serverless functions are powered by [DigitalOcean's Functions](https://www.digitalocean.com/products/functions).
 
 ## Get Started:
 
@@ -50,18 +50,16 @@ Unfortunately DigitalOcean Functions are not deployable with Terraform *yet*. We
 Anvil-state (hex string) is saved to DigitalOcean Spaces (S3-clone). Assuming the base Terraform was applied, the buckets and expiration policy should be already configured.
 
 * The state is saved to 2 locations:
-    * `anvil-state-XXXXXXXX/backups/anvil{i}/state-{timestamp}.txt` - everytime a backup is called, a new file is created here. However Terraform has configured the `backups/` directory to only hold the state for **5 days**
+    * `anvil-state-XXXXXXXX/backups/anvil{i}/state-{timestamp}.txt` - everytime a backup is called, a new file is created here. However Terraform has configured the `backups/` directory to only hold the objects for **5 days**
     * `anvil-state-XXXXXXXX/latest/anvil{i}.txt` - the most recently backed-up state. Does not expire, but is overwritten on each backup
 
 ---
 
-The directory includes simple scripts to verify RPC configuration, availability, and speed.
-
-**Assumes that Droplet IP addresses can be read from terraform state file**
-
 # Liveness
 
 Verify the availability of the RPC
+
+**Assumes that Droplet IP addresses can be read from terraform state file**
 
 ```bash
 python3 -m venv .venv
@@ -72,6 +70,8 @@ pip install -r requirements.txt
 
 python liveness.py
 ```
+
+---
 
 # Benchmark Results
 

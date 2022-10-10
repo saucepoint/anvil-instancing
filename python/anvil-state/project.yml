@@ -7,6 +7,8 @@ packages:
       SPACES_SECRET_ACCESS_KEY: "${SPACES_SECRET_ACCESS_KEY}"
       SPACES_BUCKET_NAME: "${SPACES_BUCKET_NAME}"
       RPCS: "${RPCS}"
+      BASIC_AUTH_USER: "${BASIC_AUTH_USER}"
+      BASIC_AUTH_PASSWORD: "${BASIC_AUTH_PASSWORD}"
     parameters: {}
     annotations: {}
     functions:
