@@ -18,6 +18,8 @@ Unfortunately DigitalOcean Functions are not deployable with Terraform *yet*. We
 
 [Additional DigitalOcean Documentation](https://docs.digitalocean.com/products/functions/quickstart/)
 
+1. Copy and configure `anvil-state/.env.sample` to `anvil-state/.env`
+
 1. Have [`doctl` CLI](https://docs.digitalocean.com/reference/doctl/how-to/install/) installed and configured
 
 2. `doctl serverless install` - installs the `doctl serverless` sub-CLI commands
@@ -29,9 +31,9 @@ Unfortunately DigitalOcean Functions are not deployable with Terraform *yet*. We
 3. `doctl serverless deploy anvil-state` - deploy our serverless functions!
 
 ## Dumping State
-* `anvil/dump` is scheduled to run every 5 minutes, defined [here](anvil-state/packages/project.yml)
+* `anvil/dump` is scheduled to run every 10 minutes, defined [here](anvil-state/project.yml)
 
-* files are saved based to [object storage](#object-storage)
+* files are saved to [object storage](#object-storage)
 
 ## Restoring State
 * `anvil/load` will allow you to restore state from one of your backups
