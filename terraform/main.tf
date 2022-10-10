@@ -154,3 +154,8 @@ resource "digitalocean_spaces_bucket" "anvil_state" {
 output "anvil_ipv4" {
   value = [for d in digitalocean_droplet.anvil : d.ipv4_address]
 }
+
+# prints out the Spaces bucket name
+output "anvil_spaces_bucket" {
+  value = digitalocean_spaces_bucket.anvil_state.name
+}
